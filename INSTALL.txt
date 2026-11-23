@@ -1,0 +1,110 @@
+NLS CALENDAR: team calendar for phones and computers, shared and kept in sync
+===========================================================================
+
+What this folder is
+  index.html            the calendar (NLS and the 24h Nürburgring events, one row)
+  manifest.webmanifest  app name, colours and icons
+  sw.js                 keeps a copy on each phone so the app opens without signal
+  icons/                app icon in every size phones ask for (icon-1024.png is the master)
+
+How it fits together
+  The app is a public web page with only the public dates in it. The team's own dates live in
+  ONE file, calendar.json, in a PRIVATE GitHub repository of yours. Everyone you give a link
+  reads (and, if you allow it, writes) that file, so all phones and computers show the same
+  calendar. It is separate from Race Days: different app, different private repository.
+
+
+1. PUT THE APP ONLINE (once, about five minutes)
+  1. On github.com (same account as race-days is fine): New repository, name it nls-calendar,
+     set it to Public, Create.
+  2. Click "uploading an existing file", drag in index.html, manifest.webmanifest, sw.js and the
+     icons folder, then Commit changes.
+  3. Settings > Pages > Build and deployment > Source: Deploy from a branch > Branch: main,
+     folder / (root) > Save.
+  4. After a minute the address is https://YOUR-USERNAME.github.io/nls-calendar/
+  Both apps can live on the same address (/race-days/ and /nls-calendar/); they keep their data
+  apart. Upload the new Race Days sw.js as well, so neither app clears the other's offline copy.
+
+
+2. YOUR PRIVATE DATA REPOSITORY AND YOUR TOKEN (once)
+  a. New repository, name it nls-calendar-data, set it to Private, tick "Add a README", Create.
+  b. Your picture (top right) > Settings > Developer settings > Personal access tokens >
+     Fine-grained tokens > Generate new token. Name it "NLS Calendar - me".
+       Repository access: Only select repositories > nls-calendar-data
+       Permissions > Add permissions > Contents, then set it to Read and write
+     Pick an expiry, Generate token, copy it.
+  c. On your computer open https://YOUR-USERNAME.github.io/nls-calendar/ (or the file
+     NLS_Calendar_2027_offline.html in Chrome or Edge). Click Sync, enter
+     YOUR-USERNAME/nls-calendar-data, paste the token, type your name, Connect.
+
+
+3. LOAD THE KCMG CALENDAR (once, then whenever KCMG sends a new revision)
+  a. More > Import team calendar (.ics or .zip) > choose KCMG_NLS_ADAC_2027.ics.
+  b. Leave "Replace the 11 NLS events already in that period" ticked (the public dates), Import.
+  The calendar now matches the team sheet, and everyone you share with gets it automatically.
+  A later revision imported the same way updates the entries in place.
+
+
+4. YOUR OWN PHONE
+  Sync > Show QR for phone, scan it with the phone camera and tap the link.
+  iPhone: Safari opens a "Connect NLS Calendar" box: tap Copy setup code, add the page to the
+  Home Screen (Share > Add to Home Screen), open NLS Calendar from the Home Screen, tap Sync,
+  press and hold the token box, Paste, Connect.
+  Android: tap Connect, then in Chrome tap the three dots > Install app (or Add to Home screen).
+
+
+5. SHARE WITH THE TEAM
+  Access is set by the token inside each link, so make the tokens first (as in 2b, each with
+  Only select repositories > nls-calendar-data):
+    - people who only need the dates: ONE token with Contents LEFT on Read-only. Name it
+      "NLS Calendar - view". The same view link can go to all of them.
+    - people who edit: one token PER PERSON with Contents on Read and write, named after the
+      person ("NLS Calendar - Marco"). Then you can remove one person without touching the rest.
+  Then on your connected computer: Sync > Share with people.
+    a. Choose Can view or Can edit, type the name (for an edit link: the person's name; it is
+       shown with every change they make), paste that token, Make link.
+    b. Send link (opens your mail or messaging app), Copy link, or Save QR image. Or let them
+       scan the QR code from your screen.
+    c. The links you've made are listed there, so you can show a link again later. The list
+       stays on your computer only.
+  What the other person does:
+    - Android: open the link in Chrome, tap Open calendar (view) or Connect (edit), then
+      three dots > Install app.
+    - iPhone: open the link in Safari and follow the box: Copy setup code, Add to Home Screen,
+      open NLS Calendar from the Home Screen, Sync, Paste, Connect.
+    - Computer: open the link in Chrome, Edge or Safari; Chrome and Edge can install it as an
+      app from the address bar.
+  Someone who had a view link and later gets an edit link just opens the new link; on an
+  iPhone they tap Disconnect in the app's Sync box first, then paste the new code.
+
+
+6. REMOVE SOMEONE'S ACCESS
+  Delete their token on GitHub (Settings > Developer settings > Personal access tokens >
+  Fine-grained tokens). Their app stops updating and keeps the last version it received.
+  To remove one viewer from a shared view link, delete that token and send a new view link to
+  the others. When a token reaches its expiry date the same happens: make a new token and send
+  that person a new link.
+
+
+How it behaves
+  - A change is saved to GitHub within a few seconds and reaches the others when they open the
+    app or switch back to it, and every minute while it's open and online.
+  - Edits made offline (at the track, no signal) are kept and merged when the device is back
+    online: different events and different fields combine. If two people change the same field
+    of the same event, the change that reaches GitHub last wins.
+  - Every save is a commit in nls-calendar-data with the message "NLS Calendar: saved by NAME",
+    so the full history is on GitHub and any earlier version can be restored from there. All
+    commits show your GitHub account (the tokens are yours); the name in the message says who.
+  - Sync dot: green = in step, amber = saving or offline, red = needs attention (open Sync).
+    The Sync box also shows who made the last change and when.
+
+Good to know
+  - The link contains the token. Anyone who gets a view link can see the calendar, and anyone
+    who gets an edit link can change it, until you delete that token. Send each link only to
+    the person it's for.
+  - View-only is enforced by GitHub through the Read-only token, so never use a Read and write
+    token for a view link.
+  - Keeping Race Days in step: the two apps don't sync with each other. To copy the NLS
+    calendar into Race Days, in NLS Calendar use More > Export calendar (.ics), then in Race Days
+    More > Import team calendar, Add to: NLS, leave Replace ticked, Import.
+  - To update the app later: upload the new index.html and sw.js to the nls-calendar repository.
